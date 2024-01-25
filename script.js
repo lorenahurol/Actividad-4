@@ -1,79 +1,70 @@
-// Url de la API:
-const jsonBlob = "https://jsonblob.com/api/jsonBlob/1199751545553281024"
-    
+// ********** //
+// Traer la clase Product //
+    const product = new Product()
+
+
+
 // *********** //
 // Traer el carrito:
-// const carrito = new Carrito()
-
-class Carrito {
-    constructor(currency = "€", productos = []) {
-        this.currency = currency
-        this.productos = productos
-        this.total = 0 // Inicializando el total en 0.
-    }
-
-    actualizarUnidades(sku, unidades) {
-    // Actualiza el número de unidades que se quieren comprar de un producto
-    }
-    obtenerInformacionProducto(sku) {
-    // Devuelve los datos de un producto además de las unidades seleccionadas
-    // Por ejemplo
-    // {
-    // "sku": "0K3QOSOV4V",
-    // "quantity": 3
-    // }
-    }
-    obtenerCarrito() {
-    return this.productos
-    // Devuelve información de los productos añadidos al carrito
-    // Además del total calculado de todos los productos
-    // Por ejemplo:
-    // {
-    // "total": "5820",
-    // "currency: "€",
-    // "products" : [
-    // {
-    // "sku": "0K3QOSOV4V"
-    // ..
-    // }
-    // ]}
-    // }
-}
-}
+    const carrito = new Carrito()
 
 // ********** //
 
 // Seleccionando los elementos del HTML:
-const productsContainer = document.querySelector("#productos-container");
+
+// Seleccionando los elementos del HTML:
 const productosTotal = document.querySelector("#productos-total")
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Traer los productos de la API: https://jsonblob.com/api/jsonBlob/1199751545553281024
-  fetch(jsonBlob)
+  // Traer los productos de la API: 
+  fetch("https://jsonblob.com/api/jsonBlob/1199751545553281024")
     .then(response => response.json())
     .then(products => {
       // Result disponible para trabajar:
       const result = products.products;
 
-      // Pintar las tarjetas de los productos:
-        function drawProductCards(result) {
-        result.forEach(product => {
-          const productSKU = product.SKU;
-          const productTitle = product.title;
-          const productPrice = product.price;
+      // Pintar la tabla de los productos:
+      const drawProductTable = (products) => {
+        const tableElement = document.querySelector("table")
+    
+        const tbody = document.createElement("tbody")
 
-          const newProduct = document.createElement("div");
-          newProduct.classList = "tarjeta__producto";
-          newProduct.innerHTML = 
-            `<p>${productSKU}</p>
-            <h3>${productTitle}</h3>
-            <p>${productPrice}</p>`;
+        // Crear una fila en la tabla para cada uno de los productos:
+        products.forEach(product => {
+          const newRow = document.createElement("tr")
+          newRow.classList.add("table__row")
 
-          productsContainer.appendChild(newProduct);
+          newRow.innerHTML = `
+            <td class="table__col">
+              <h4>${product.title}</h4>
+              <p class="sku">Ref: ${product.SKU}</p>
+            </td>
+            <td class="table__col--cantidad">
+              <button class="btn">-</button>
+              <div class="cantidad__caja" id="cantidad-caja">1</div>
+              <button class="btn">+</button>
+            </td>
+            <td class="table__col">${product.price}€</td>
+            <td class="table__col">${product.price}€</td>
+          `
+          tbody.appendChild(newRow)
         });
+
+        tableElement.appendChild(tbody)
+
+        const productContainer = document.querySelector("#products-container")
+          productContainer.appendChild(tableElement)
       }
 
-      drawProductCards(result);
+        drawProductTable(result)
+
+        
+        
     });
 });
+
+// Input de la cantidad dentro de caja cantidad
+// Pintar la tabla total:
+        // const drawTotalTable = (addedProducts) => {}
+

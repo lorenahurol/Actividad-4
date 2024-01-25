@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actividad 4 - Carrito de la compra JS - A Good Shop</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <!-- Cabecera de la página web -->
     <header>
@@ -18,24 +20,35 @@
 
     <!-- Seccion principal del carrito -->
     <main>
-        <div class="wrapper__main">
+        <div class="wrapper--main">
             <!-- Crear section que muestre los productos en el carrito -->
-            <section id="productos-container"></div>
+            <section class="products__container" id="products-container">
+                <table class="products__table">
+                    <thead class="products__table--head">
+                    <tr>
+                        <th>Productos</th>
+                        <th>Cantidad</th>
+                        <th>Unidad</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                </table>
+            </section>
+        </div>
 
-            <!-- Crear section totales para el total -->
-            <section id="productos-total">
+        <!-- Crear section totales para el total -->
+            <section class="products__total" id="products-total">
+                <h5>Total</h5>
                 <p>Total unidades: <span id="unidades">0</span></p>
                 <p>Total precio: £<span id="precio">0</span></p>
             </section>
         </div>
-
-
-
     </main>
 
     <!-- Cargando los scripts -->
     <!--<script src="carrito.js"></script>-->
     <script src="script.js"></script>
-    
+
 </body>
+
 </html>

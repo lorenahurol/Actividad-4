@@ -21,7 +21,7 @@
 
 /* Estilos general del wrapper que envuelve la página */
 
-.wrapper {
+.wrapper, .wrapper--main {
     padding-left: 20px;
     padding-right: 20px;
     max-width: 1440px;
@@ -46,4 +46,67 @@ header {
     color: var(--color-fuente);
     font-size: 1.3rem;
     font-weight: 700;
+}
+
+/* Estilo de las secciones principales */
+main {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+p {
+    font-size: 1rem;
+    color: var(--color-fuente);
+    line-height: 1.3;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.sku {
+    font-size: 0.8rem;
+}
+
+table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 20px;
+}
+
+.products__container {
+    width: 65%;
+}
+
+.products__table--head {
+    border-bottom: var(--border);
+}
+
+.table__col--cantidad {
+    display: flex;
+}
+
+.cantidad__caja {
+    border: var(--border);
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.btn {
+    background-color: transparent;
+    border: none;
+    padding: 15px;
+}
+
+.products__total {
+    background-color: rgba(235, 235, 235, 0.8);
+    width: 20%;
+    max-height: 250px;
+}
+
+.products__total .table__row {
+    border-bottom: var(--border);
 }
