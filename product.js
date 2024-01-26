@@ -1,11 +1,14 @@
 class Product {
-    constructor(sku, title, price) {
-        this.sku = sku
-        this.title = title
-        this.price = price
-        this.quantity = 1 // Cantidad por defecto de cada producto es 1.
-    }
+  constructor({ sku, title, price, units = 1 }) {
+    this.sku = sku
+    this.title = title
+    this.price = Number(price)
+    this.units = units // Valor por defecto es 1 (Se anade 1 unidad de producto cada vez al carrito)
 
+    }
+  }
+
+  /*
     getSku() {
         return this.sku
     }
@@ -26,3 +29,4 @@ class Product {
         return this.quantity * this.price
     }
 }
+*/

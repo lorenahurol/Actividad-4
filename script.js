@@ -5,11 +5,10 @@ class Product {
   constructor({ sku, title, price, units = 1 }) {
     this.sku = sku
     this.title = title
-    this.price = price
+    this.price = Number(price)
     this.units = units // Valor por defecto es 1 (Se anade 1 unidad de producto cada vez al carrito)
-
-    }
   }
+}
 
 // *********** //
 // Traer el carrito:
@@ -30,43 +29,57 @@ class Carrito {
     this.products = this.products.filter(product => product.sku !== sku)
   }
 
-  // **REVISAR** Actualiza el número de unidades que se quieren comprar de un producto
+  // Actualiza el número de unidades que se quieren comprar de un producto
   updateUnits(sku, units) {
     // Seleccionar el producto por su SKU
     const productSKU = this.products.find(product => product.sku === sku)
     // Si el producto existe en el carrito, actualiza las unidades:
     if (productSKU) {
       productSKU.units = units
-      productSKU.price = productSKU.price * units
     }
   }
-
-  // **REVISAR** Devuelve los datos de 1 producto además de las unidades seleccionadas
+  // Devuelve los datos de 1 producto además de las unidades seleccionadas
   getProductInfo(sku) {
-    return this.products.find(product => product.sku === sku)
+    const productSKU = this.products.find(product => product.sku === sku)
+
+    if (productSKU) {
+      return {
+        sku: productSKU.sku,
+        title: productSKU.title,
+        units: productSKU.units
+      }
+    }
 
   }
 
   // Valor total del array this.products = []
   getCarrito() {
-    // Precio total calculado de todos los productos del carrito
+    // Precio total calculado de todos los productos del carrito.
     const total = this.products.reduce((acc, product) => {
-      return acc + product.price
+      return acc + (product.price * product.units)
     }, 0)
 
     const totalPrice = Number(total.toFixed(2))
 
-    // **REVISAR** Informacion completa de los productos anadidos al carrito
+    // Informacion completa de los productos anadidos al carrito. Se guarda en totalCarrito.
+    const totalCarrito = []
+    this.products.forEach(product => {
+      totalCarrito.push({
+        sku: product.sku,
+        title: product.title,
+        price: product.price,
+        units: product.units
+      })
+    })
+
     return {
-      products: this.products.filter(product => product.sku),
+      products: totalCarrito,
       total: totalPrice,
       currency: this.currency
-
     }
-
   }
-
 }
+  
 
 // ********** //
 
@@ -125,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Input de la cantidad dentro de caja cantidad
+// Data id
 // Pintar la tabla total:
         // const drawTotalTable = (addedProducts) => {}
 
