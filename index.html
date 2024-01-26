@@ -23,7 +23,7 @@
         <div class="wrapper--main">
             <!-- Crear section que muestre los productos en el carrito -->
             <section class="products__container" id="products-container">
-                <table class="products__table">
+                <table class="products__table" id="products-table">
                     <thead class="products__table--head">
                     <tr>
                         <th>Productos</th>
@@ -32,15 +32,33 @@
                         <th>Total</th>
                     </tr>
                     </thead>
+                    <tbody class="products__table--body" id="products-table-body">
+                        <!-- Contenido de script.js -->
+                    </tbody>
                 </table>
             </section>
         </div>
 
         <!-- Crear section totales para el total -->
             <section class="products__total" id="products-total">
-                <h5>Total</h5>
-                <p>Total unidades: <span id="unidades">0</span></p>
-                <p>Total precio: £<span id="precio">0</span></p>
+                <table class="total__table" id="total-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <h3>Total</h3>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="total__table--body" id="total-table-body">
+                    <!-- Contenido de script.js -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><h4>TOTAL</h4></td>
+                        <td id="total-shop"></td>
+                    </tr>
+                </tfoot>
+                </table>
             </section>
         </div>
     </main>

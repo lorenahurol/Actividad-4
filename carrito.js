@@ -53,7 +53,12 @@ class Carrito {
     if (productSKU && productSKU.units > 1) { // No puede haber unidades en negativo
       productSKU.units--
     }
-  }
+    }
+    
+    // Calcular el total de cada producto:
+    getProductTotal() {
+        return product.price * product.units
+    }
 
   // Valor total del array this.products = []
   getCarrito() {

@@ -1,9 +1,9 @@
 class Product {
-  constructor({ sku, title, price, units = 1 }) {
+  constructor({ sku, title, price, units = 0 }) {
     this.sku = sku
     this.title = title
     this.price = Number(price)
-    this.units = units // Valor por defecto es 1 (Se anade 1 unidad de producto cada vez al carrito)
+    this.units = units // Valor por defecto empieza en 0
 
     }
   }
