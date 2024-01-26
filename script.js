@@ -1,12 +1,72 @@
 // ********** //
 // Traer la clase Product //
-    const product = new Product()
+// const product = new Product()
+class Product {
+  constructor({ sku, title, price, units = 1 }) {
+    this.sku = sku
+    this.title = title
+    this.price = price
+    this.units = units // Valor por defecto es 1 (Se anade 1 unidad de producto cada vez al carrito)
 
-
+    }
+  }
 
 // *********** //
 // Traer el carrito:
-    const carrito = new Carrito()
+// const carrito = new Carrito()
+class Carrito {
+  constructor(currency = "€") {
+    this.products = [] // Guardar instancias de productos.
+    this.currency = currency     
+  }
+
+  // Anadir al carrito:
+  addToCart(product) {
+    this.products.push(product)
+  }
+
+  // Quitar del carrito:
+  removeFromCart(sku) {
+    this.products = this.products.filter(product => product.sku !== sku)
+  }
+
+  // **REVISAR** Actualiza el número de unidades que se quieren comprar de un producto
+  updateUnits(sku, units) {
+    // Seleccionar el producto por su SKU
+    const productSKU = this.products.find(product => product.sku === sku)
+    // Si el producto existe en el carrito, actualiza las unidades:
+    if (productSKU) {
+      productSKU.units = units
+      productSKU.price = productSKU.price * units
+    }
+  }
+
+  // **REVISAR** Devuelve los datos de 1 producto además de las unidades seleccionadas
+  getProductInfo(sku) {
+    return this.products.find(product => product.sku === sku)
+
+  }
+
+  // Valor total del array this.products = []
+  getCarrito() {
+    // Precio total calculado de todos los productos del carrito
+    const total = this.products.reduce((acc, product) => {
+      return acc + product.price
+    }, 0)
+
+    const totalPrice = Number(total.toFixed(2))
+
+    // **REVISAR** Informacion completa de los productos anadidos al carrito
+    return {
+      products: this.products.filter(product => product.sku),
+      total: totalPrice,
+      currency: this.currency
+
+    }
+
+  }
+
+}
 
 // ********** //
 
