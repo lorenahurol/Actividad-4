@@ -1,42 +1,84 @@
 class Carrito {
-    constructor(currency = "€", products = []) {
-        this.currency = currency
-        this.products = products
-        this.total = 0 // El estado inicial del carrito es 0.
-    }
+  constructor(currency = "€") {
+    this.products = [] // Guardar instancias de productos.
+    this.currency = currency     
+  }
 
-    addToCart(product) {
-        this.products 
-    }
-    
-    removeFromCart() {
-        this.products = this.products.filter(productos => products.sku !== sku)
-    }
+  // Anadir al carrito:
+  addToCart(product) {
+    this.products.push(product)
+  }
 
-    updateItemNumber (sku, unidades) {
-        // Actualiza el número de unidades que se quieren comprar de un producto
-        
-    }
-    
-    getProductInfo(sku) {
-    // Devuelve los datos de un producto además de las unidades seleccionadas
-    return this.products.find((product) => product.getSku() === sku)
-    }
+  // Quitar del carrito:
+  removeFromCart(sku) {
+    this.products = this.products.filter(product => product.sku !== sku)
+  }
 
-    getCarrito() {
-    return this.products
-    // Devuelve información de los productos añadidos al carrito
-    // Además del total calculado de todos los productos
-    // Por ejemplo:
-    // {
-    // "total": "5820",
-    // "currency: "€",
-    // "products" : [
-    // {
-    // "sku": "0K3QOSOV4V"
-    // ..
-    // }
-    // ]}
-    // }
-}
+  // Actualiza el número de unidades que se quieren comprar de un producto
+  updateUnits(sku, units) {
+    // Seleccionar el producto por su SKU
+    const productSKU = this.products.find(product => product.sku === sku)
+    // Si el producto existe en el carrito, actualiza las unidades:
+    if (productSKU) {
+      productSKU.units = units
+    }
+  }
+
+  // Devuelve los datos de 1 producto además de las unidades seleccionadas
+  getProductInfo(sku) {
+    const productSKU = this.products.find(product => product.sku === sku)
+
+    if (productSKU) {
+      return {
+        sku: productSKU.sku,
+        title: productSKU.title,
+        units: productSKU.units
+      }
+    }
+  }
+
+  // Sumar una unidad de un producto al carrito (para manipularlo con el + button):
+  increaseUnits(sku) {
+    const productSKU = this.products.find(product => product.sku === sku)
+
+    if (productSKU) {
+      productSKU.units++
+    }
+  }
+
+  // Restar una unidad de un producto al carrito (para manipularlo con el - button):
+  substractUnits(sku) {
+    const productSKU = this.products.find(product => product.sku === sku)
+
+    if (productSKU && productSKU.units > 1) { // No puede haber unidades en negativo
+      productSKU.units--
+    }
+  }
+
+  // Valor total del array this.products = []
+  getCarrito() {
+    // Precio total calculado de todos los productos del carrito.
+    const total = this.products.reduce((acc, product) => {
+      return acc + (product.price * product.units)
+    }, 0)
+
+    const totalPrice = Number(total.toFixed(2))
+
+    // Informacion completa de los productos anadidos al carrito. Se guarda en totalCarrito.
+    const totalCarrito = []
+    this.products.forEach(product => {
+      totalCarrito.push({
+        sku: product.sku,
+        title: product.title,
+        price: product.price,
+        units: product.units
+      })
+    })
+
+    return {
+      products: totalCarrito,
+      total: totalPrice,
+      currency: this.currency
+    }
+  }
 }
