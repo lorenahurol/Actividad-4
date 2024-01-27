@@ -5,8 +5,15 @@ class Carrito {
   }
 
   // Anadir al carrito:
-  addToCart(product) {
-    this.products.push(product)
+    addToCart(product) {
+        const isProduct = this.products.find((item) => item.getSku() === product.getSku());
+        if (!isProduct(product)) {
+            this.products.push(product)
+        } else {
+            return this.updateUnits(product)
+        }
+        
+    
   }
 
   // Quitar del carrito:
