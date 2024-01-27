@@ -1,30 +1,37 @@
 // ********** //
 // Traer la clase Product //
 class Product {
-  constructor({ sku, title, price, units = 0 }) {
-    this.sku = sku
-    this.title = title
-    this.price = Number(price)
-    this.units = units
+
+  #sku
+  #title
+  #price
+  #units
+
+  constructor({ SKU, title, price, units = 0 }) {
+    this.#sku = SKU
+    this.#title = title
+    this.#price = Number(price)
+    this.#units = units
   }
+
   getSku() {
-    return this.sku
+    return this.#sku
   }
 
   getTitle() {
-    return this.title
+    return this.#title
   }
 
   getPrice() {
-    return this.price
+    return this.#price
   }
 
   getUnits() {
-    return this.units
+    return this.#units
   }
 
   getTotal() {
-    return this.price * this.units
+    return this.#price * this.#units
   }
 }
 
@@ -32,64 +39,67 @@ class Product {
 // *********** //
 // Traer el carrito:
 class Carrito {
-  constructor(currency = "€") {
-    this.products = [] // Guardar instancias de productos.
+  constructor(products = [], currency = "€") {
+    this.products = products // Guardar instancias de productos.
     this.currency = currency     
   }
 
-  // Comprobar si tenemos el producto:
+  // Comprobar si tenemos un producto especifico:
   isProduct(product) {
-    this.products.find((item) => item.getSku() === product.getSku());
+    return this.products.find(item => item.getSku() === product.getSku());
   }
+
   // Anadir al carrito:
+  // Si el producto esta en el carrito, actualizar las unidades.
   addToCart(product) {
-        if (!this.isProduct(product)) {
+    const existingProduct = this.isProduct(product)
+        if (!existingProduct) {
             this.products.push(product)
         } else {
-            this.updateUnits(product.getSku(), product.getUnits() + 1)
-        }
+            this.updateUnits(product.getSku(), existingProduct.getUnits() + 1)
+    }
   }
 
   // Quitar del carrito:
   removeFromCart(sku) {
-    this.products = this.products.filter(product => product.sku !== sku)
+    this.products = this.products.filter(product => product.getSku() !== sku)
   }
 
   // Actualiza el número de unidades que se quieren comprar de un producto
   updateUnits(sku, units) {
-    // Seleccionar el producto por su SKU
-    const productSKU = this.products.find(product => product.sku === sku)
+    // Seleccionar el producto a actualizar por su SKU
+    const productToUpdate = this.products.find(product => product.getSku() === sku)
     // Si el producto existe en el carrito, actualiza las unidades:
-    if (productSKU) {
-      productSKU.units = units
+    if (productToUpdate) {
+      productToUpdate.units = units
     }
   }
 
   // Devuelve los datos de 1 producto además de las unidades seleccionadas
   getProductInfo(sku) {
-    const productSKU = this.products.find(product => product.sku === sku)
+    const product = this.products.find(product => product.getSku() === sku)
 
-    if (productSKU) {
+    if (product) {
       return {
-        sku: productSKU.sku,
-        title: productSKU.title,
-        units: productSKU.units
+        sku: product.getSku(),
+        title: product.getTitle(),
+        units: product.getUnits()
       }
     }
   }
 
   // Sumar una unidad de un producto al carrito (para manipularlo con el + button):
   increaseUnits(sku) {
-    const productSKU = this.products.find(product => product.sku === sku)
+    const product = this.products.find(product => product.getSku() === sku)
 
-    if (productSKU) {
-      productSKU.units++
+    if (product) {
+      product.units++
     }
   }
 
   // Restar una unidad de un producto al carrito (para manipularlo con el - button):
   decreaseUnits(sku) {
-        const product = this.products.find(product => product.sku === sku);
+        const product = this.products.find(product => product.getSku() === sku);
         if (product && product.units > 0) { // El carrito no puede tener numeros negativos
             product.units--;
         }
@@ -97,7 +107,7 @@ class Carrito {
     
     // Calcular el total de cada producto:
     getProductTotal(product) {
-        return product.price * product.units
+        return product.getPrice() * product.getUnits()
     }
 
   // Valor total del array this.products = []
@@ -107,58 +117,28 @@ class Carrito {
       return acc + (product.price * product.units)
     }, 0)
 
-    const totalPrice = Number(total.toFixed(2))
-
-    // Informacion completa de los productos anadidos al carrito. Se guarda en totalCarrito.
-    const totalCarrito = []
-    this.products.forEach(product => {
-      totalCarrito.push({
-        sku: product.sku,
-        title: product.title,
-        price: product.price,
-        units: product.units
-      })
-    })
+    // Informacion completa de los productos anadidos al carrito:
+    const totalCarrito = this.products.map(product => ({
+        sku: product.getSku(),
+        title: product.getTitle(),
+        price: product.getPrice(),
+        units: product.getUnits()
+    }))
+        
 
     return {
       products: totalCarrito,
-      total: totalPrice,
+      total: Number(total.toFixed(2)),
       currency: this.currency
     }
   }
-}
+} 
 
+/*
 // Seleccionar elementos HTML:
-const productsTableBody = document.querySelector("#products-table-body")
+
 const totalTableBody = document.querySelector("#total-table-body")
 const totalShopElement = document.querySelector("#total-shop")
-
-// Instancia del carrito:
-const carrito = new Carrito()
-
-
-
-// Pintar la tabla de productos:
-const drawProductTable = (carrito) => {
-  // Vaciar la tabla antes de pintarla:
-  productsTableBody.innerHTML = ""
-
-  carrito.products.forEach(product => {
-    const newRow = document.createElement("tr")
-    newRow.innerHTML = `
-      <td class="table__col">
-        <h4>${product.title}</h4>
-        <p class="sku">Ref: ${product.sku}</p>
-      </td>
-      <td class="table__col--cantidad">
-        <button class="subtract-btn btn">-</button>
-        <div class="cantidad__caja">${product.units}</div>
-        <button class="increase-btn btn">+</button>
-      </td>
-      <td class="table__col">${product.price}€</td>
-      <td class="table__col">${carrito.getProductTotal(product)}€</td>
-    `
-    productsTableBody.appendChild(newRow)
 
       // Event Listeners para manipulacion por parte del usuario:
     // Sumar y restar:
@@ -201,8 +181,43 @@ const drawTotalTable = (carrito) => {
     totalShopElement.textContent = totalShop.toFixed(2) + "EUROS"
 
   
-  })
+  }) 
+} */
+
+// Pintar la tabla con los datos de los productos:
+
+const drawProductTable = (productInstances) => {
+  // Seleccionar el HTML
+  const productTableBody = document.querySelector("#products-table-body")
+  // Vaciar la tabla antes de pintarla:
+  productTableBody.innerHTML = ""
+
+  // Iterar sobre las instancias de los productos y anadir a la tabla:
+
+  productInstances.forEach(product => {
+    const newRow = document.createElement("tr")
+    newRow.innerHTML = `
+    <td class="table__col">
+        <h4>${product.getTitle()}</h4>
+        <p class="sku">Ref: ${product.getSku()}</p>
+      </td>
+      <td class="table__col--cantidad">
+        <button class="subtract-btn btn">-</button>
+        <div class="cantidad__caja">${product.getUnits()}</div>
+        <button class="increase-btn btn">+</button>
+      </td>
+      <td class="table__col">${product.getPrice()}€</td>
+      <td class="table__col">${product.getTotal()}€</td>
+    `
+    productTableBody.appendChild(newRow)
+    
+  });
 }
+
+// Pintar la tabla del checkout Total:
+
+
+
 
   document.addEventListener("DOMContentLoaded", () => {
 
@@ -214,29 +229,17 @@ const drawTotalTable = (carrito) => {
         const result = products.products;
         console.log(result)
         
-
-        // Instanciar el carrito:
-        const carrito = new Carrito()
-
-        // Agregar productos al carrito:
-        result.forEach(products => {
-          const product = new Product(products)
-          
-          carrito.addToCart(product)
+        // Instanciar el resultado de la API con los productos:
+        const productInstances = result.map(productInfo => {
+          return new Product(productInfo)
         })
 
-        console.log("Products in cart:", carrito.products);
+        drawProductTable(productInstances)
 
-        
-
-        // Llamar a las tablas dentro del DOM:
-        drawProductTable(carrito)
-        drawTotalTable(carrito)
       })
   })
 
 // Mas event Listeners y operaciones de Carrito
-// Arreglar SKU undefined
 // Arreglar botones llamando a varios productos
 // Arreglar tabla total
 // Maquetar
