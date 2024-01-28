@@ -27,12 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
         // Iterar sobre los productos y pintarlos en la tabla usando innerHTML:
         carrito.products.forEach(product => {
             const newRow = document.createElement("tr")
+            newRow.classList.add("table__row")
             newRow.innerHTML = `
                 <td class="table__col">
-                    <h4>${product.getTitle()}</h4>
+                    <h3>${product.getTitle()}</h3>
                     <p class="sku">Ref: ${product.getSku()}</p>
                 </td>
-                <td class="table__col--cantidad">
+                <td class="table__col--quantity">
                     <button class="btn" id="subtract-btn">-</button>
                     <input type="number" class="products__quantity--box" id="product-quantity" value="${product.getUnits()}" min="0">
                     <button class="btn" id="increase-btn">+</button>
@@ -103,17 +104,18 @@ document.addEventListener("DOMContentLoaded", () => {
         carrito.products.forEach(product => {
             // Si el producto tiene mas de 0 unidades, anadir una fila:
             if (product.getUnits() > 0) {
-            const newRow = document.createElement("tr")
+                const newRow = document.createElement("tr")
             // Anadir los datos del producto a la fila:
-            newRow.innerHTML = `
-                <td><p>${product.getTitle()}</p></td>
-                <td>${carrito.getProductTotal(product).toFixed(2)}${carrito.currency}</td>
-            `
-            totalTableBody.appendChild(newRow)
+                newRow.innerHTML = `
+                    <td>${product.getTitle()}</td>
+                    <td>${carrito.getProductTotal(product).toFixed(2)}${carrito.currency}</td>
+                `
+                totalTableBody.appendChild(newRow)
             }
 
         // Actualizar el total del carrito en tfoot:
         const totalShopElement = document.querySelector("#total-shop")
+        totalShopElement.classList.add("total__table--price")    
         totalShopElement.textContent = carrito.getTotal().toFixed(2) + carrito.currency
         })
     }

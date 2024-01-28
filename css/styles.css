@@ -2,8 +2,6 @@
 :root {
     --color-fondo: rgb(255, 255, 255);
     --color-fuente: rgb(0, 0, 0);
-    --color-primario: #3B82F6;
-    --color-secundario: #E14444;
     --border: solid 1px rgba(212, 212, 212, 0.8);
 }
 
@@ -14,6 +12,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: sans-serif;
+    color: var(--color-fuente);
     text-decoration: none;
     list-style: none;
 }
@@ -21,7 +20,7 @@
 
 /* Estilos general del wrapper que envuelve la página */
 
-.wrapper, .wrapper--main {
+.wrapper {
     padding-left: 20px;
     padding-right: 20px;
     max-width: 1440px;
@@ -30,12 +29,14 @@
 
     display: flex;
     justify-content: space-between;
+    gap: 150px;
+    flex-wrap: wrap;
+
 }
 
 /* Estilos generales del header */
 
 header {
-    color: var(--color-fuente);
     padding: 15px;
     min-height: 50px;
     text-align: left;
@@ -56,14 +57,12 @@ main {
 
 p {
     font-size: 1rem;
-    color: var(--color-fuente);
     line-height: 1.3;
-    max-width: 100%;
-    margin-bottom: 20px;
 }
 
 .sku {
     font-size: 0.8rem;
+    margin-top: 12px;
 }
 
 table {
@@ -77,36 +76,64 @@ td {
     padding: 20px;
 }
 
+/* Estilos de la seccion product container */
+
 .products__container {
-    width: 65%;
+    flex: 2;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
 .products__table--head {
-    border-bottom: var(--border);
+    border-bottom: var(--border);   
 }
 
-.table__col--cantidad {
+.table__row {
+    border-bottom: var(--border);    
+}
+
+.table__col--quantity {
     display: flex;
+    text-align: center;
 }
 
-.cantidad__caja {
+.products__quantity--box {
     border: var(--border);
     border-radius: 5px;
-    padding: 15px;
+    padding: 10px;
 }
 
 .btn {
     background-color: transparent;
+    font-size: 1rem;
     border: none;
-    padding: 15px;
+    padding: 20px;
 }
 
 .products__total {
-    background-color: rgba(235, 235, 235, 0.8);
-    width: 20%;
-    max-height: 250px;
+    width: 30%;
+    border-radius: 5px;
 }
 
-.products__total .table__row {
-    border-bottom: var(--border);
+/* Estilos de la seccion tabla total */
+
+.total__table {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.products__total {
+    background-color: #FAFAFA;
+}
+
+.total__table tfoot {
+    border-top: var(--border);
+    
+}
+
+.total__table--price {
+    font-weight: 700;
 }
