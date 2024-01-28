@@ -42,7 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 `
             productsTableBody.appendChild(newRow)
 
-            // Event Listeners para manipulacion por parte del usuario:
+        // Event Listeners para manipulacion por parte del usuario:
+        const eventListenerConfig = () => {
             // Definir quantityElement:
             const quantityElement = newRow.querySelector("#product-quantity")
 
@@ -77,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                     updateTotal()
             })
-                            
+        
             // Actualizar la cantidad de producto y el total de la compra:
             const updateQuantityAndTotal = () => {
                 quantityElement.value = product.getUnits()
@@ -90,9 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 totalElement.textContent = carrito.getProductTotal(product).toFixed(2) + carrito.currency
                 drawTotalTable(carrito)
             }
-
-        })
-    }
+        }
+            
+            // Llamar a la funcion de configuracion de los Event Listeners:
+            eventListenerConfig()
+    })
+}
 
                     
     // Pintar la tabla del total de la compra:
