@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Instancia del Carrito:
+    // Instancia de la clase Carrito:
     const carrito = new Carrito()
 
     // Llamada a la API:
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     carrito.addToCart(product)
     })
 
-    // Pintar la tabla de productos:    
+    // Pintar la TABLA DE PRODUCTOS:
     const drawProductTable = (carrito) => {
         const productsTableBody = document.querySelector("#products-table-body")
         // Vaciar la tabla antes de pintarla:
@@ -42,8 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `
             productsTableBody.appendChild(newRow)
 
-        // Event Listeners para manipulacion por parte del usuario:
-        const eventListenerConfig = () => {
+        // EVENT LISTENERS: para manipulacion por parte del usuario:
             // Definir quantityElement:
             const quantityElement = newRow.querySelector("#product-quantity")
 
@@ -64,26 +63,26 @@ document.addEventListener("DOMContentLoaded", () => {
             // Modificar la cantidad del input:
             quantityElement.addEventListener("input", (ev) => {
             // Eliminar caracteres que no sean numeros:
-                ev.target.value = ev.target.value.replace(/\D/g, '')
+            ev.target.value = ev.target.value.replace(/\D/g, '')
               
-                const newQuantity = parseInt(ev.target.value) // Numero entero.
-                if (ev.target.value === "") { // Si el campo esta vacio, las unidades son 0.
-                    product.units = 0
-                // Validacion del numero: Si es valido, se actualiza la cantidad de las unidades:
-                } else if (!isNaN(newQuantity) && newQuantity >= 0) {
-                    product.units = newQuantity
-                } else { // Si no es valido, se restauran las unidades.
-                    ev.target.value = product.getUnits();
-                    return
-                }
-                    updateTotal()
+            const newQuantity = parseInt(ev.target.value) // Numero entero.
+            if (ev.target.value === "") { // Si el campo esta vacio, las unidades son 0.
+                product.units = 0
+            // Validacion del numero: Si es valido, se actualiza la cantidad de las unidades:
+            } else if (!isNaN(newQuantity) && newQuantity >= 0) {
+                product.units = newQuantity
+            } else { // Si no es valido, se restauran las unidades.
+                ev.target.value = product.getUnits();
+                return
+            }
+            updateTotal()
             })
         
             // Actualizar la cantidad de producto y el total de la compra:
             const updateQuantityAndTotal = () => {
                 quantityElement.value = product.getUnits()
                 updateTotal()
-                }
+            }
         
             // Actualizar y pintar el calculo total del producto y sus unidades:
             const updateTotal = () => {
@@ -91,15 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 totalElement.textContent = carrito.getProductTotal(product).toFixed(2) + carrito.currency
                 drawTotalTable(carrito)
             }
-        }
-            
-            // Llamar a la funcion de configuracion de los Event Listeners:
-            eventListenerConfig()
-    })
-}
-
-                    
-    // Pintar la tabla del total de la compra:
+        })
+    }
+             
+    // Pintar la TABLA DEL TOTAL de la compra:
         const drawTotalTable = (carrito) => {
         const totalTableBody = document.querySelector("#total-table-body")
         // Vaciar la tabla antes de anadir datos:
@@ -124,8 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
             
-        // Llamar a la funcion de pinta las tablas en la UI:
+    // Llamar a las funciones para pintar las tablas en la interfaz:
         drawProductTable(carrito)
         drawTotalTable(carrito)
-        })
     })
+})
